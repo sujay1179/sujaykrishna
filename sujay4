@@ -1,0 +1,73 @@
+#include <bits/stdc++.h>
+#include<string.h>
+using namespace std;
+
+static inline string &ltrim(string &s) {
+    s.erase(s.begin(), find_if(s.begin(), s.end(),
+            not1(ptr_fun<int, int>(isspace))));
+    return s;
+}
+
+static inline string &rtrim(string &s) {
+    s.erase(find_if(s.rbegin(), s.rend(),
+            not1(ptr_fun<int, int>(isspace))).base(), s.end());
+    return s;
+}
+
+static inline string &trim(string &s) {
+    return ltrim(rtrim(s));
+}
+
+int main(){
+fstream ifp, ofp, iffp;
+    string word,replace,read;
+    int word_len, i, p,found = 0;
+    map<string, string> dict;
+    map<string,string>::iterator itr;
+
+    iffp.open("C:\\Users\\sv\\Downloads\\New folder\\find_words.txt");
+    if (!iffp ) {
+        cout<<"Error in creating file!!!";
+        return(0);
+    }
+    vector<string> row;
+    string line, dictword, temp;
+while (iffp >>  word)
+{
+    row.clear();
+    getline(iffp, line);
+    stringstream s(line);
+    while (getline(s, dictword,",")) {
+        row.push_back(dictword);
+    }
+    word=trim(row[0]);
+    dict.insert(pair<string,string>(word,row[1]));
+}
+/* for(itr=dict.begin(); itr != di 
+ct.end();itr++)
+{
+           cout << '\t' << itr->first
+             << '\t' << itr->second << endl;
+} */
+iffp.close();
+ifp.open("C:\\Users\\sv\\Downloads\\New folder\\t8.shakespeare.txt");
+ofp.open("C:\\Users\\sv\\Downloads\\New folder\\fin_words.txt",ios::out);
+
+while  (ifp >> read)
+{
+    read=trim(read);
+    replace=read;
+    //cout << read << endl;
+    auto temp = dict.find(read);
+    if (temp != dict.end())
+    {
+        cout << temp->second;
+        replace=temp->second;
+    }
+    //cout << replace;
+    ofp << replace << " ";
+}
+
+ifp.close();
+ofp.close();
+}
